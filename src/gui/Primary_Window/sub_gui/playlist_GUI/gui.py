@@ -20,21 +20,58 @@ def play_next():
         check_for_directory()
         currsong=playlist.get(ACTIVE)
         indx=index_of_song(currsong,tracks)
-        
+        if indx==-1:
+            indx=0
+        elif indx==len(tracks)-1:
+            indx=0
+        print("index of next song :",indx+1)
         next_song=tracks[indx+1]
         playlist.selection_clear(0,END)
         playlist.selection_set(indx+1)
         playlist.activate(index=indx+1)
-        mixer.music.load(next_song)
-        mixer.music.play()
+        try:
+            mixer.music.load(next_song)
+            mixer.music.play()
+        except:
+            print("Error in play_next().mixer :\n",Exception)
         return_to_main_directory()
     except:
+        currsong=playlist.get(ACTIVE)
+        indx=index_of_song(currsong,tracks)
         playlist.selection_clear(0,END)
-        playlist.selection_set(indx+1)
-        playlist.activate(index=indx+1)
+        playlist.selection_set(indx)
+        playlist.activate(index=indx)
         print("error from play_next()\n",Exception)
         return_to_main_directory()
 
+
+
+def play_previous():
+    global currsong
+    try:
+        check_for_directory()
+        currsong=playlist.get(ACTIVE)
+        indx=index_of_song(currsong,tracks)
+        prv_song=tracks[indx-1]
+        playlist.selection_clear(0,END)
+        playlist.selection_set(indx-1)
+        playlist.activate(index=indx-1)
+        try:
+            mixer.music.load(prv_song)
+            mixer.music.play()
+        except Exception as e: 
+            print("error in playing from play_previous.mixer :\n",e)
+            pass
+        print("previous song played :)")
+        return_to_main_directory()
+    except:
+        currsong=playlist.get(ACTIVE)
+        indx=index_of_song(currsong,tracks)
+        playlist.selection_clear(0,END)
+        playlist.selection_set(indx)
+        playlist.activate(index=indx)
+        print("Got Error in play_previous() :\n",Exception)
+        return_to_main_directory()
 
 
 # When Using the Current method below, for automatically playing the
@@ -62,53 +99,13 @@ def continous_playing_thread():
     a.start()
 '''
 
-def play_continous(lst_itm):
-    try:
-        while mixer.music.get_busy()==True :
-            continue
-        else:
-            currsong=playlist.get(ACTIVE)
-            indx=index_of_song(currsong,tracks)
-            next_song=tracks[indx+1]
-            mixer.Channel.queue(next_song)
-    except:
-        print("error in play_continous()")
-        pass
-
-def play_continous_thread(lst_itm):
-    a=threading.Thread(target=play_continous,args=(lst_itm),daemon=True)
-    a.start()
-
-
-def play_previous():
-    check_for_directory()
-    try:
-        currsong=playlist.get(ACTIVE)
-        indx=index_of_song(currsong,tracks)
-        prv_song=tracks[indx-1]
-        playlist.selection_clear(0,END)
-        playlist.selection_set(indx-1)
-        playlist.activate(index=indx-1)
-        try:
-            mixer.music.load(prv_song)
-            mixer.music.play()
-        except Exception as e: 
-            print("error in playing from play_previous.mixer :\n",e)
-            pass
-        print("previous song played :)")
-        return_to_main_directory()
-    except:
-        playlist.selection_clear(0,END)
-        playlist.selection_set(indx+1)
-        playlist.activate(index=indx+1)
-        print("Got Error in play_previous() :\n",Exception)
-        return_to_main_directory()
 
 
 
 
 
-def playlist_play_button_clicked(root):
+
+def playlist_play_button_clicked():
     print("playlist play button clicked")
     check_for_directory()
     for currentsong in playlist.curselection():
@@ -120,8 +117,7 @@ def playlist_play_button_clicked(root):
         except:
             print("error ",Exception)
             pass
-    return_to_main_directory()
-    #root.after(1000,play_continous_thread(playlist))    
+    return_to_main_directory() 
 
 
 def song_seprator(obj,lst):
@@ -134,6 +130,13 @@ def song_seprator_thread(obj,lst):
     a.start()
 
 
+def refresh_button_clicked():
+    print("refresh button clicked")
+    check_for_directory()
+    playlist.delete(0,END)
+    tracks=list_tempAudio_nondir()
+    song_seprator_thread(playlist,tracks)
+    return_to_main_directory()
 
 
 
@@ -165,6 +168,7 @@ def Playlist(parent):
         font=("Montserrat Bold", 26 * -1)
     )
 
+
     
     global playlist_background_image
     playlist_background_image = PhotoImage(file=relative_to_assets("image_1.png"))
@@ -188,7 +192,7 @@ def Playlist(parent):
         image=playlist_button_image_1,
         borderwidth=0,
         highlightthickness=0,
-        command=lambda: threading.Thread(target=playlist_play_button_clicked,args= (parent,), daemon=True).start(),
+        command=lambda: threading.Thread(target=playlist_play_button_clicked, daemon=True).start(),
         relief="flat",
         bg='#FFFFFF',
         activebackground='#FFFFFF'
@@ -199,6 +203,24 @@ def Playlist(parent):
         height=39.0
     )
 
+
+    global playlist_button_image_2
+    playlist_button_image_2 = PhotoImage(
+        file=relative_to_assets("button_2.png"))
+    Button(
+        image=playlist_button_image_2,
+        borderwidth=0,
+        highlightthickness=0,
+        command=lambda: refresh_button_clicked(),
+        relief="flat",
+        bg='#FFFFFF',
+        activebackground='#FFFFFF'
+    ).place(
+        x=650.0,
+        y=418.0,
+        width=65.0,
+        height=55.0
+    )
 
 
     #################### Playlist #################################################################################################################

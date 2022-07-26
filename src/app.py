@@ -62,6 +62,8 @@ def continous_playing_thread():
 
 
 initialise_mixer()
+
+
 def handle_button_press(btn_name):
     global current_window
     if btn_name == "home":
@@ -78,13 +80,6 @@ def handle_button_press(btn_name):
         current_window=About(window)
     elif btn_name == "pauseresume":
         pauseresume_button_clicked()
-    elif btn_name == "previous_button":
-        threading.Thread(target=play_previous(),daemon=True).start()
-        print("Previous button clicked")
-        
-    elif btn_name == "forward_button":
-        threading.Thread(target=play_next(),daemon=True).start()
-        print("Forward button clicked")
         
 
 
@@ -114,18 +109,16 @@ def pauseresume_button_clicked():
     if (pauseresume_button['text']=="Pause"):
         if mixer.music.get_busy()==True:
             print("Pause button clicked")
-            threading.Thread(target=pause_song(),daemon=True).start()
-            pauseresume_button.config(image=resume_image, text="Resume")
-        else:
-            print("Already Paused")
-    if (pauseresume_button['text']=="Resume"):
+            pause_song()
+            pauseresume_button.config(image=resume_image,text="Resume")
+        
+
+    elif (pauseresume_button['text']=="Resume"):
         if mixer.music.get_busy()==False:
             print("Resume button clicked")
-            threading.Thread(target=resume_song(),daemon=True).start()
-            pauseresume_button.config(image=pause_image, text="Pause")
-        else:
-            print("Already Playing")
-
+            resume_song()
+            pauseresume_button.config(image=pause_image,text="Pause")
+        
 
 window = Tk()
 window.title("CodTubify")
@@ -292,7 +285,7 @@ Forward_button = Button(
     borderwidth=0,
     bg="#171435",
     highlightthickness=0,
-    command=lambda: handle_button_press("forward_button"),
+    command=lambda: play_next(),
     relief="flat"
 )
 Forward_button.place(
@@ -311,7 +304,7 @@ Previous_button = Button(
     borderwidth=0,
     bg="#171435",
     highlightthickness=0,
-    command=lambda: handle_button_press("previous_button"),
+    command=lambda: play_previous(),
     relief="flat"
 )
 Previous_button.place(

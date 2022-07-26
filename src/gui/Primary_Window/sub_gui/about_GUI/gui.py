@@ -52,10 +52,10 @@ def About(parent_window):
     
 
     canvas.create_text(
-    198.0,
+    200.0,
     136.0625,
     anchor="nw",
-    text="CowboyCoder",
+    text="Noob",
     fill="#EFEFEF",
     font=("Montserrat SemiBold", 15 * -1)
     )

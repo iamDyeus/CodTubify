@@ -1,10 +1,10 @@
-from tkinter import ACTIVE
 import pygame.mixer as mixer
 import os
 
 
 def initialise_mixer():
     mixer.init()
+
 
 
 def play_song(sound):
@@ -30,11 +30,14 @@ def list_tempAudio():
     return_to_main_directory()
     return lst
 
+def list_tempAudio_nondir():
+    lst=os.listdir()
+    return lst
 
 def index_of_song(song,lst):
     for i in range(len(lst)):
         if song==lst[i]:
-            return i
+            return i-1
     return i-1
 
 
@@ -54,12 +57,11 @@ def stop_song():
 
 def check_for_directory():
     #print("\nBefore check_for_directory Used: ",os.getcwd())                                               
-    
     if os.getcwd()==("src/backend/temp_audio"):
         pass
-    else: os.chdir("src/backend/temp_audio")
-        
+    else: os.chdir("src/backend/temp_audio")    
     #print("\nAfter check_for_directory: ",os.getcwd())
+
 
 def return_to_main_directory():
     #For a More detailed Understanding uncomment these print statements
