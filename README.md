@@ -5,7 +5,8 @@
 ![starts](https://img.shields.io/github/stars/iamDyeus/CodTubify)
 ![issues](https://img.shields.io/github/issues/iamDyeus/CodTubify)
 ![forks](https://img.shields.io/github/forks/iamDyeus/CodTubify)
-![social](https://img.shields.io/github/license/iamDyeus/CodTubify)
+![license](https://img.shields.io/github/license/iamDyeus/CodTubify)
+
 
 <img height="300" width="300" alt="codtubify" src="https://user-images.githubusercontent.com/87000693/181087300-2e235f00-e661-4fd8-be34-35f14bda1a8e.png">
 
