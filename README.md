@@ -9,7 +9,7 @@
 
 <img height="300" width="300" alt="codtubify" src="https://user-images.githubusercontent.com/87000693/181087300-2e235f00-e661-4fd8-be34-35f14bda1a8e.png">
 
-# About CodTubify - An Online Music Player 
+# About CodTubify 🎵 - An Online Music Player 
 CodTubify is a Music Player project, fully developed in Python. It can Play your favorite Songs or any Youtube Playlist without any interruption.
 
 <br />
@@ -20,6 +20,7 @@ CodTubify is a Music Player project, fully developed in Python. It can Play your
 * Operation system: **Windows**
 * Python Version: **3.9.x**
 ### Required Modules
+* Refer to [`requirements.txt`](src/requirements.txt)
 * Use the package manager [pip](https://pip.pypa.io/en/stable/) to install all the Required Modules.
 ```bash
 python -m pip install -r requirements.txt
