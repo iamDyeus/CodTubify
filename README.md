@@ -22,7 +22,7 @@ CodTubify is a Music Player project, fully developed in Python. It can Play your
 ### Required Modules
 * Use the package manager [pip](https://pip.pypa.io/en/stable/) to install all the Required Modules.
 ```bash
-pip install -r requirements.txt
+python -m pip install -r requirements.txt
 ```
 ### Required Audio PostProcessors 
 * [FFMPEG AND FFPROBE](https://bit.ly/ffmpeg_ffprobe_exe)
