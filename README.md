@@ -2,10 +2,10 @@
 [![forthebadge](https://forthebadge.com/images/badges/made-with-python.svg)](https://forthebadge.com)
 [![forthebadge](https://forthebadge.com/images/badges/open-source.svg)](https://forthebadge.com)
 
-![starts](https://img.shields.io/github/stars/iamDyeus/CodTubify)
-![issues](https://img.shields.io/github/issues/iamDyeus/CodTubify)
-![forks](https://img.shields.io/github/forks/iamDyeus/CodTubify)
-![license](https://img.shields.io/github/license/iamDyeus/CodTubify)
+![starts](https://badgen.net/github/stars/iamDyeus/CodTubify)
+![issues](https://badgen.net/github/issues/iamDyeus/CodTubify)
+![forks](https://badgen.net/github/forks/iamDyeus/CodTubify)
+![license](https://badgen.net/github/license/iamDyeus/CodTubify)
 
 
 <img height="300" width="300" alt="codtubify" src="https://user-images.githubusercontent.com/87000693/181087300-2e235f00-e661-4fd8-be34-35f14bda1a8e.png">
