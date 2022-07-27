@@ -26,7 +26,8 @@ pip install -r requirements.txt
 ```
 ### Required Audio PostProcessors 
 * [FFMPEG AND FFPROBE](https://bit.ly/ffmpeg_ffprobe_exe)
-( just download the EXE's from the given link and extract them in "src/backend/Download_process/" before starting the application)
+( just download the EXE's from the given link and extract them in "src/backend/Download_process/" before starting the application) 
+* Or refer to [`IMPORTANT.md`](src/backend/Download_process/important.md)
 
 
 <br />
@@ -110,10 +111,12 @@ Distributed under the MIT License. See [`LICENSE.txt`](/LICENSE.txt) for more in
 
 # Acknowledgments
 
--   **Parth Jadhav and team** for their Amazing [Tkinter Designer](https://github.com/ParthJadhav/Tkinter-Designer).
--   **Mohit & Anirudh** for the inspiration of GUI from the awesome project [HotinGo](https://github.com/Just-Moh-it/HotinGo)
--   [**Canva**](https://www.canva.com) for making the Graphic Design Process Much Easier For me
--   [yt-dlp](https://discord.com/invite/FumpHSsjep) and [pygame](https://discord.com/invite/EaWkr5TVQy) Discord Mods/Helpers for Helping me in all my Noob problems.
+-   **Parth Jadhav and team** for their Amazing [`Tkinter Designer`](https://github.com/ParthJadhav/Tkinter-Designer).
+-   **Mohit & Anirudh** for there awesome project [`HotinGo`](https://github.com/Just-Moh-it/HotinGo) as the inpiration for GUI.
+-   [**Canva**](https://www.canva.com) for making the Graphic Design Process Much Easier For me.
+-   [`yt-dlp`](https://discord.com/invite/FumpHSsjep) and [`pygame`](https://discord.com/invite/EaWkr5TVQy) Discord Mods/Helpers for Helping me in most of my Noob queries.
 
-<BR/>
-MADE WITH ❤️ 
+<br/>
+
+
+<img  src="https://madewithlove.now.sh/in?heart=true&colorA=%23ff9933&colorB=%23138808&template=for-the-badge" alt="Made with love in India">
