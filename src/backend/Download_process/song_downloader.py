@@ -7,7 +7,7 @@ option={'final_ext': 'mp3',
                      'preferredcodec': 'mp3',
                      'preferredquality': '5'}],
  'outtmpl': 'src/backend/temp_audio/%(title)s.%(ext)s',
- 'ffmpeg_location': 'C:/Users/User/Desktop/Codtubify/src/backend/Download_process/ffmpeg.exe'}
+ 'ffmpeg_location': 'src/backend/Download_process/ffmpeg.exe'}
 
 def download_song(link):
         try:
