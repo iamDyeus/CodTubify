@@ -54,7 +54,7 @@ This project required me to utilize many different aspects of what I learned so 
 
 ### Things To Consider
 The Directory's are a little Messed up, so in order to Run the Application smoothly, please Follow the Steps below.
-- After Cloning, your folder should look like something `codtubify-main`
+- After Cloning, your folder should look something like `Codtubify-main`
 - open the main folder and run Command Prompt in that location
 - Now in Command Prompt Give the Following Command : `python src/app.py`
 
