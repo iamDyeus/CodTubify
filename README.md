@@ -50,11 +50,13 @@ This project required me to utilize many different aspects of what I learned so 
 ### Challenges
 - There were significant challenges on this project that had a lot to do with traversing the unknown. Firstly, after i decided NOT to use the Object-oriented Programming approach for the GUI. For a while i was left Confused, because it was not one single gui i was working with, it was a group of many Nested GUI's combined together. though after waiting for someone to answer my questions on stackoverflow (which no one did to this date). I started figuring it out in my Way, Hopefully i was Able to Link all the GUI's with each other. (probably after creating a lot of mess in the code)
 - Once i completed the GUI, the second problem which i was encountering was that the audio file downloaded using yt-dlp wasn't really an audio file, so i had to Convert the Downloaded File into a .mp3 using PostProcessors Such as : *FFMPEG/FFPROBE* , so that they become playable with pygame.
-- Also if i start listing all the challenges i faced while making it, then probably i would write an entire Nowel here so i'll just keep it short.  
+- There were plently Other challenges which i also faced while Making this, but i'll keep them for some other day. 
 
 ### Things To Consider
-I strongly suggest to use VScode or Pycharm or any other Code editor for running the app.py script because i have messed up very much in Directory's and stuff.
-(if you DIDN'T understand what i mean :"JUST OPEN THE REPO's FOLDER USING A CODE EDITOR AND THEN RUN THE app.py script ") 
+The Directory's are a little Messed up, so in order to Run the Application smoothly, please Follow the Steps below.
+- After Cloning, your folder should look like something `codtubify-main`
+- open the main folder and run Command Prompt in that location
+- Now in Command Prompt Give the Following Command : `python src/app.py`
 
 <br />
 <br />
