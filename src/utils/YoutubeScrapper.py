@@ -11,6 +11,17 @@ class Scraper:
     YOUTUBE_URL_REGEX = re.compile(
         r'https?://(?:www\.)?(?:youtube\.com/watch\?v=|youtu\.be/)([^&=%\?]{11})'
     )
+    YOUTUBE_PLAYLIST_REGEX = re.compile(
+        r'https?://www.youtube.com/playlist\?list=([\w-]+)'
+    )  
+
+    @staticmethod
+    def is_youtube_url(url):
+        return bool(Scraper.YOUTUBE_URL_REGEX.match(url))
+    
+    @staticmethod
+    def is_playlist_url(url):
+        return bool(Scraper.YOUTUBE_PLAYLIST_REGEX.match(url))
 
     @staticmethod
     def get_title(url):
@@ -24,10 +35,6 @@ class Scraper:
         prefix = "https://www.youtube.com/watch?v="
         results = YoutubeSearch(title, max_results=1).to_dict()
         return prefix + results[0]["id"] if results else None
-
-    @staticmethod
-    def is_youtube_url(url):
-        return bool(Scraper.YOUTUBE_URL_REGEX.match(url))
 
     @staticmethod
     def get_playlist_items(playlist_url):
