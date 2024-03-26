@@ -21,13 +21,13 @@ class pygameController:
         - raise_volume
         - change_directory
     '''
-    def __init__(self):
+    def __init__(self, media_directory=None):
         try:
             mixer.init(44100, 32, 2, 2048)
         except pygame.error as e:
             print(f"Error initializing pygame mixer: {e}")
             return
-        self.sounds_directory = "media/"
+        self.sounds_directory = media_directory
 
     def play(self, mp3):
         try:
@@ -91,3 +91,7 @@ class pygameController:
             mixer.music.set_volume(min(1, volume + 0.1))
         except pygame.error as e:
             print(f"Error raising the volume: {e}")
+
+    def change_directory(self, new_directory):
+        self.sounds_directory = new_directory
+        print(f"Changed directory to {new_directory}")

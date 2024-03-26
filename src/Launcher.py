@@ -1,7 +1,7 @@
 from mediaCollector.YoutubeCollector import YoutubeCollector 
 from mediaPlayer.Player import MusicPlayer
 import os
-from mediaPlayer.soundController import pygameController
+import time
 
 def download(link, collector, player):
     success,filename = collector.collect(link)
@@ -10,18 +10,18 @@ def download(link, collector, player):
     return filename
 
 def load_songs(directory, player):
+    
     for song in os.listdir(directory):
-        # print(song+" added to playlist from dir "+directory)
-        player.add_to_playlist(song)
+        if song.endswith(".mp3"):
+            player.add_to_playlist(song)
 
-if __name__ == '__main__':
-    sound = pygameController()
+if __name__ == '__main__':  
     collector = YoutubeCollector()
     player = MusicPlayer("pygame")
     links = ["https://www.youtube.com/watch?v=5qap5aO4i9A"]
     
     # for link in links:
-        # download(link, collector, player)
+    #     download(link, collector, player)
     
     load_songs("media", player)
 
@@ -33,11 +33,11 @@ if __name__ == '__main__':
     print("\ncurrent song  directory :")
     print(player.playlist.get_current_song_path())
 
-    player.play_simple()
-
-    # try:
-    #     player.play_simple()
-    # except Exception as e:
-    #     print("Error:", e)
+    player.play()
+    time.sleep(10)
+    player.play_next()
+    time.sleep(10)
+    player.play_next()
+    time.sleep(10)
 
 

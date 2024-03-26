@@ -2,7 +2,7 @@ from .soundController import pygameController
 from .mediaManager import PlaylistManager
 
 class MusicPlayer:
-    def __init__(self, mixer="pygame"):
+    def __init__(self, mixer="pygame", music="media/"):
         """
         Initializes the MusicPlayer with the specified mixer type.
 
@@ -13,9 +13,9 @@ class MusicPlayer:
         - ValueError: If an invalid mixer type is provided.
         """
         if mixer == "pygame":
-            self.sound_controller = pygameController()
+            self.sound_controller = pygameController(media_directory=music)
         else:
-            self.sound_controller = pygameController()
+            self.sound_controller = pygameController(media_directory=music)
             raise ValueError("Invalid mixer type. Please use 'pygame'")
         
         self.playlist = PlaylistManager()
@@ -33,14 +33,21 @@ class MusicPlayer:
         self.playlist.addSongNode(mp3)
 
     def play(self, mp3=None):
+        """
+        # Method to Play Songs
+        plays the current song in the playlist if no argument is provided
+        
+        Parameters:
+        - mp3 (str): The path to the MP3 file to play. If provided, the current song in the playlist is changed to this MP3 file.
+        
+        Uses:
+        - PlaylistManager.change_current_song method to change the current song in the playlist.
+        - PlaylistManager.get_current_song_path method to get the path of the current song in the playlist.
+        - sound_controller.play method to play the MP3 file.
+        """
         if mp3:
             self.playlist.change_current_song(mp3)
         self.sound_controller.play(self.playlist.get_current_song_path())
-
-    def play_simple(self):
-        song = self.playlist.get_current_song_path()
-        self.sound_controller.play(song)
-
 
     def stop(self):
         self.sound_controller.stop()
