@@ -12,14 +12,16 @@ class MusicPlayer:
         Raises:
         - ValueError: If an invalid mixer type is provided.
         """
+        self.directory = music
         if mixer == "pygame":
             self.sound_controller = pygameController(media_directory=music)
         else:
             self.sound_controller = pygameController(media_directory=music)
             raise ValueError("Invalid mixer type. Please use 'pygame'")
-        
         self.playlist = PlaylistManager()
-        
+        # load the music files in the media directory
+        self.load_songs()
+
     def add_to_playlist(self, mp3):
         """
         when a song is downloaded, it is added to the playlist using this method
@@ -49,9 +51,17 @@ class MusicPlayer:
             self.playlist.change_current_song(mp3)
         self.sound_controller.play(self.playlist.get_current_song_path())
 
+        # Set end event to play next song
+        # This will play the next song in the playlist when the current song ends
+        self.sound_controller.after_song_ends(self.play_next)
+
     def stop(self):
         self.sound_controller.stop()
+        self.playlist.clear()
 
+    def reset_playlist(self):
+        self.playlist.clear()
+        
     def pause(self):
         self.sound_controller.pause()
 
@@ -77,3 +87,20 @@ class MusicPlayer:
 
     def play_previous(self):
         self.play(self.playlist.PreviousSong())
+
+    def load_songs(self, **kwargs):
+        """
+        this method will load all the songs present in the directory
+        Its main usecase is to load all the previously downloaded songs into the player
+        """
+        import os
+        
+        if("dir" in kwargs):
+            dir = kwargs["dir"]
+        else : dir = self.directory
+
+        songs = os.listdir(dir)
+        for song in songs :
+            if song.endswith(".mp3"):
+                self.add_to_playlist(song)
+        

@@ -1,12 +1,14 @@
 """
 NIGGA,if you think you can directly run this then your completly wrong,
-inorder to run this, you either run "src/laucher.py" or from some other script but from "src/" dir
+inorder to run this, you either run "laucher.py" or from some other script but from "src/" dir
 
 see GUI import paths if you don't understand what i mean
 """
 
 
 # IMPORTING PREQUISITE MODULES
+import os
+import time
 from pathlib import Path
 from tkinter import (
     Toplevel,
@@ -18,22 +20,34 @@ from tkinter import (
     StringVar,
 )
 
+
 # IMPORTING SUB GUI'S
-from gui.Home.main import Home
-from gui.Playlist.main import Playlist
+from gui.Home.gui import Home
+from gui.Playlist.gui import Playlist
 # from gui.Radio.main import Radio
-from gui.Featured.main import Featured
-from gui.About.main import About
+# from gui.Featured.main import Featured
+# from gui.About.main import About
 
 # DEFINING ASSET PATHS
 OUTPUT_PATH = Path(__file__).parent
 ASSETS_PATH = OUTPUT_PATH / Path("./assets")
-ICONS_PATH = ASSETS_PATH / Path("./icons")
-IMAGES_PATH = ASSETS_PATH / Path("./images")
+ICONS_PATH = ASSETS_PATH / Path("./icon")
+IMAGES_PATH = ASSETS_PATH / Path("./img")
 FONTS_PATH = ASSETS_PATH / Path("./fonts")
 CURSORS_PATH = ASSETS_PATH / Path("./cursors")
 
 
+# IMPORTING PLAYER BACKEND
+from mediaCollector.YoutubeCollector import YoutubeCollector
+from mediaPlayer.Player import MusicPlayer
+
+
+# def app():
+#     # Example usage
+#     root = tk.Tk()
+#     root.withdraw()  # Hide the root window
+#     app = MainWindow(root)
+#     root.mainloop()
 
 def app():
     MainWindow()
@@ -43,12 +57,17 @@ class MainWindow(Toplevel):
     def __init__(self, *args, **kwargs):
         Toplevel.__init__(self, *args, **kwargs)
 
+        # BACKEND CONFIGURATION
+        self.collector = YoutubeCollector()
+        self.player = MusicPlayer("pygame")
+        self.player.load_songs()
+
         # WINDOW CONFIGURATION
         self.title("CodTubify")
         self.geometry("930x506")
         self.configure(bg="#171435")
         self.resizable(False, False)
-        self.iconbitmap(ICONS_PATH / Path("icon2.ico"))
+        # self.iconbitmap(ICONS_PATH / Path("icon2.ico"))
 
         # HANDLES WINDOW CHANGES
         self.current_window = None
@@ -68,22 +87,22 @@ class MainWindow(Toplevel):
 
 
         # IMAGES USED FOR TOPLEVEL GUI
-        img_frames_background = PhotoImage(file = IMAGES_PATH / Path("image_1.png"))
-        img_btn_home = PhotoImage(file = IMAGES_PATH / Path("button_1.png"))
-        img_btn_playlist = PhotoImage(file = IMAGES_PATH / Path("button_2.png"))
-        # img_btn_radio = PhotoImage(file = IMAGES_PATH / Path("button_radio.png"))
-        img_btn_featured = PhotoImage(file = IMAGES_PATH / Path("button_8.png"))
-        img_btn_about = PhotoImage(file = IMAGES_PATH / Path("button_7.png"))
-        img_btn_pause = PhotoImage(file = IMAGES_PATH / Path("button_3.png"))
-        img_btn_resume = PhotoImage(file = IMAGES_PATH / Path("button_4.png"))
-        img_btn_previous = PhotoImage(file = IMAGES_PATH / Path("button_6.png"))
-        img_btn_next = PhotoImage(file = IMAGES_PATH / Path("button_5.png"))
+        self.img_frames_background = PhotoImage(file = IMAGES_PATH / Path("image_1.png"))
+        self.img_btn_home = PhotoImage(file = IMAGES_PATH / Path("button_1.png"))
+        self.img_btn_playlist = PhotoImage(file = IMAGES_PATH / Path("button_2.png"))
+        # self.img_btn_radio = PhotoImage(file = IMAGES_PATH / Path("button_radio.png"))
+        self.img_btn_featured = PhotoImage(file = IMAGES_PATH / Path("button_8.png"))
+        self.img_btn_about = PhotoImage(file = IMAGES_PATH / Path("button_7.png"))
+        self.img_btn_pause = PhotoImage(file = IMAGES_PATH / Path("button_3.png"))
+        self.img_btn_resume = PhotoImage(file = IMAGES_PATH / Path("button_4.png"))
+        self.img_btn_previous = PhotoImage(file = IMAGES_PATH / Path("button_6.png"))
+        self.img_btn_next = PhotoImage(file = IMAGES_PATH / Path("button_5.png"))
 
         # FRAMES BACKGROUND
         self.frames_background = self.canvas.create_image(
             566.0,
             253.0,
-            image=img_frames_background,
+            image=self.img_frames_background,
         )
 
         # APP NAME
@@ -123,7 +142,7 @@ class MainWindow(Toplevel):
         # NAVIGATION BUTTONS 
         self.btn_home = Button(
             self.canvas,
-            image=img_btn_home,
+            image=self.img_btn_home,
             bg="#171435",
             borderwidth=0,
             highlightthickness=0,
@@ -142,7 +161,7 @@ class MainWindow(Toplevel):
 
         self.btn_playlist = Button(
             self.canvas,
-            image=img_btn_playlist,
+            image=self.img_btn_playlist,
             bg="#171435",
             borderwidth=0,
             highlightthickness=0,
@@ -161,7 +180,7 @@ class MainWindow(Toplevel):
 
         self.btn_featured = Button(
             self.canvas,
-            image=img_btn_featured,
+            image=self.img_btn_featured,
             bg="#171435",
             borderwidth=0,
             highlightthickness=0,
@@ -180,7 +199,7 @@ class MainWindow(Toplevel):
 
         self.btn_about = Button(
             self.canvas,
-            image=img_btn_about,
+            image=self.img_btn_about,
             bg="#171435",
             borderwidth=0,
             highlightthickness=0,
@@ -200,7 +219,7 @@ class MainWindow(Toplevel):
         # MEDIA CONTROL BUTTONS
         self.btn_PauseResume = Button(
             self.canvas,
-            image=img_btn_pause,
+            image=self.img_btn_pause,
             bg="#171435",
             borderwidth=0,
             highlightthickness=0,
@@ -220,7 +239,7 @@ class MainWindow(Toplevel):
 
         self.btn_Previous = Button(
             self.canvas,
-            image=img_btn_previous,
+            image=self.img_btn_previous,
             bg="#171435",
             borderwidth=0,
             highlightthickness=0,
@@ -239,7 +258,7 @@ class MainWindow(Toplevel):
         
         self.btn_Next = Button(
             self.canvas,
-            image=img_btn_next,
+            image=self.img_btn_next,
             bg="#171435",
             borderwidth=0,
             highlightthickness=0,
@@ -260,11 +279,12 @@ class MainWindow(Toplevel):
         # SCREENS LOGIC
         self.windows = {
             "home": Home(self),
-            "playlist": Playlist(self),
-            #"radio": Guests(self),
-            "featured": Featured(self),
-            "about": About(self),
+            "playlist": Playlist(self)
         } # Loop through windows and place them
+          
+            #"radio": Radio(self),
+            # "featured": Featured(self),
+            # "about": About(self),
 
         # Set the current window to home
         self.handle_btn_press(self.btn_home, "home")
@@ -279,6 +299,10 @@ class MainWindow(Toplevel):
 
 
     def handle_btn_press(self, caller, name):
+        """
+            This method is used to handle button press events from the main window,
+            mainly responsible for changing the screens and sidebar indicator
+        """
         # Place the sidebar on respective button
         self.sidebar_indicator.place(x=0, y=caller.winfo_y())
 
@@ -286,24 +310,81 @@ class MainWindow(Toplevel):
         for window in self.windows.values():
             window.place_forget()
 
-        # Set ucrrent Window
+        # Set current Window
         self.current_window = self.windows.get(name)
 
         # Show the screen of the button pressed
-        self.windows[name].place(x=215, y=72, width=1013.0, height=506.0)
+        if self.current_window is not None:
+            self.current_window.place(x=230, y=72, width=675.0, height=405.0)
+        else:
+            raise ValueError(f"Window {name} does not exist.")
 
         # Handle label change
-        current_name = self.windows.get(name)._name.split("!")[-1].capitalize()
-        self.canvas.itemconfigure(self.heading, text=current_name)
+        self.current_name = self.windows.get(name)._name.split("!")[-1].capitalize()
+        self.canvas.itemconfigure(self.page_indicator, text=self.current_name)
+
+
+    def handle_child_btn_press(self, caller, name, **kwargs):
+        """
+        This method is used to handle button press events from child windows
+
+        - name : name of the button pressed
+        - caller : the button object that was pressed (probably for changing its config on press)
+        - **kwargs : additional arguments passed to the method, if any!
+        """
+        # Handling Home Download Button Press
+        # TODO : Add Threading to avoid GUI freeze
+        if name == "home_download":
+            query = kwargs.get("home_entry") # Getting User Input
+            if query: # If User Input is not empty
+                try:
+                    success,filename = self.collector.collect(query)
+                    if success:
+                        if type(filename) == list: # If playlist is downloaded
+                            for file in filename:
+                                self.player.add_to_playlist(file)
+                        else : # If single song is downloaded
+                            self.player.add_to_playlist(filename)
+                        self.player.play()
+                except Exception as e:
+                    print(e)
+                    messagebox.showerror("Error", "An error occured while downloading the song")
+            else:
+                messagebox.showerror("Error", "Input Invalid, Unspecified or Empty")
+
+
+        
+        
 
     def handle_media_control(self, caller, name):
+        """
+        This method is used to handle media control events from the main window,
+        mainly responsible for controlling the media player
+
+        - created to avoid code redundancy and make the code more readable
+        """
         if name == "pause":
+            self.player.pause()
             caller.configure(image=self.img_btn_resume)
             caller.configure(text="resume")
         elif name == "resume":
+            self.player.unpause()
             caller.configure(image=self.img_btn_pause)
             caller.configure(text="pause")
         elif name == "previous":
-            pass
+            if self.btn_PauseResume.cget("text") == "resume":
+                self.btn_PauseResume.configure(image=self.img_btn_pause)
+                self.btn_PauseResume.configure(text="pause")
+            self.player.play_previous()
         elif name == "next":
-            pass
+            if self.btn_PauseResume.cget("text") == "resume":
+                self.btn_PauseResume.configure(image=self.img_btn_pause)
+                self.btn_PauseResume.configure(text="pause")
+            self.player.play_next()
+        elif name == "stop":
+            if self.btn_PauseResume.cget("text") == "resume":
+                self.btn_PauseResume.configure(image=self.img_btn_pause)
+                self.btn_PauseResume.configure(text="pause")
+            self.player.stop()
+            self.btn_PauseResume.configure(image=self.img_btn_pause)
+            self.btn_PauseResume.configure(text="pause")

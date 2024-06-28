@@ -95,3 +95,7 @@ class pygameController:
     def change_directory(self, new_directory):
         self.sounds_directory = new_directory
         print(f"Changed directory to {new_directory}")
+
+    # Setting End Event
+    def after_song_ends(self, event):
+        mixer.music.set_endevent(event)

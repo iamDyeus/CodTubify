@@ -171,3 +171,12 @@ class PlaylistManager:
             return None
         self.current_song = self.current_song.prev_song
         return self.current_song.mp3
+    
+    def clear(self):
+        """
+        Clears the playlist by removing all the songs from the queue.
+        """
+        while self.head:
+            self.removeSongNode()
+
+    

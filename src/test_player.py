@@ -9,20 +9,23 @@ def download(link, collector, player):
         player.add_to_playlist(filename) 
     return filename
 
-def load_songs(directory, player):
+def load_songs(player , directory="media"):
+    queue = []
     for song in os.listdir(directory):
         if song.endswith(".mp3"):
+            queue.append(song)
             player.add_to_playlist(song)
+    return queue
 
 if __name__ == '__main__':  
     collector = YoutubeCollector()
     player = MusicPlayer("pygame")
-    links = ["https://www.youtube.com/watch?v=5qap5aO4i9A"]
+    links = ["https://www.youtube.com/watch?v=mpZrpOY7ABo","CNV Sound Vol 14"]
     
     # for link in links:
     #     download(link, collector, player)
     
-    load_songs("media", player)
+    load_songs(player)
 
     print("\nCurrent playlist:")
     playlist = player.playlist.get_current_queue()
