@@ -51,12 +51,12 @@ class Home(Frame):
             borderwidth=0,
             highlightthickness=0,
             command=lambda: self.parent.handle_child_btn_press(self.btn_download,"home_download", home_entry = self.get_home_entry()),
-            # self.parent.handle_child_btn_press(self.btn_home_1,"home_download", home_entry = self.get_home_entry())
             # self.parent.handle_child_btn_press(caller,"caller_name", **kwargs = home_entry)
             relief="flat",
             bg='#FFFFFF',
-            activebackground='#FFFFFF').place(
-                x=230.0,y=310.0,width=190.0,height=48.0
+            activebackground='#FFFFFF')
+        self.btn_download.place(
+            x=230.0,y=310.0,width=190.0,height=48.0
         )
 
         self.canvas.create_text(
@@ -86,46 +86,6 @@ class Home(Frame):
         if inp == "":
             print("[LOG] Entry is empty")
             return None
+        # Clear the entry box
+        self.entrybox_home.delete(0, 'end')
         return inp
-
-
-# TODO : remove the code below before pushing to main
-# def download_thread(link):
-#     a=threading.Thread(target=download_song(link,), daemon=True)
-#     a.start()
-# def Download_button_clicked(root):
-#     user_home_entry=home_entrybox.get()
-#     print("user asked  for :",user_home_entry)
-#     if is_youtube_url(user_home_entry):
-#         try:
-#             toast.show_toast("Song Loading","Please Wait a Moment, while the song is being Loaded", duration=3,icon_path=relative_to_assets("codtubify.ico"))
-#             #threading.Thread(target=download_song(user_home_entry,), daemon=True).start()
-#             root.after(100, download_thread(user_home_entry))
-#             #root.after(1000, lambda: toast.show_toast("Song Downloaded","Song Downloaded Successfully", duration=3,icon_path=relative_to_assets("codtubify.ico")))
-#             #download_song(user_home_entry)
-#             #Loading_splash().destroy()
-#             #song_title=get_title(user_home_entry)
-#             #tracks=list_tempAudio()
-#             #arg=song_title,tracks
-#             #threading.Thread(target=playit_song(arg,), daemon=True).run()
-                  
-#         except :
-#             print(Exception)
-            
-
-
-#     elif user_home_entry=="":
-#         root.after(100, lambda: toast.show_toast(" Enter Something Noob ","i won't get Dreams of what you want to download!",duration=3,icon_path=relative_to_assets("codtubify.ico")))
-            
-#     else:
-#         video_uri=get_youtube_uri(user_home_entry)
-#         toast.show_toast("Song Downloading","Please Wait a Moment, while the song is being Downloaded", duration=3,icon_path=relative_to_assets("codtubify.ico"))
-#         root.after(100, download_thread(video_uri))
-#         #root.after(1000, lambda: toast.show_toast("Song Downloaded","Song Downloaded Successfully", duration=3,icon_path=relative_to_assets("codtubify.ico")))
-#         #toast.show_toast("Song Downloaded!","Song Downloaded Successfully!",duration=2,icon_path=relative_to_assets("codtubify.ico"))
-#         #threading.Thread(target=download_song(video_uri,), daemon=True).start()
-#         #song_title=(get_title(video_uri)+".mp3")
-#         #tracks=list_tempAudio()
-#         #ply=threading.Thread(target=play_song, args=(song_title,), daemon=True).start()
-
-
