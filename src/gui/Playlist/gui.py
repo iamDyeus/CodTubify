@@ -76,7 +76,7 @@ class Playlist(Frame):
             image=self.img_btn_play,
             borderwidth=0,
             highlightthickness=0,
-            command=lambda: self.parent.handle_child_btn_press(self.btn_play,"playlist_play", playlist = self.load_player_playlist()),
+            command=lambda: self.parent.handle_child_btn_press(self.btn_play,"playlist_play", file = self.playlist.get(ACTIVE)),
             relief="flat",
             bg='#FFFFFF',
             activebackground='#FFFFFF'
@@ -117,8 +117,12 @@ class Playlist(Frame):
         self.playlist.grid(columnspan=150)
         self.playlist.place(x=50,y=110)
 
+
+
     def load_player_playlist(self):
         queue = self.parent.player.playlist.get_current_queue()
+        print("THE QUEUE OBTAINED IS : ")
+        print(queue)
         self.playlist.delete(0, END)
         for song in queue:
             self.playlist.insert(END, song)

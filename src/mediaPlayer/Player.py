@@ -1,13 +1,16 @@
 from .soundController import pygameController
 from .mediaManager import PlaylistManager
+import pygame
+import threading
 
 class MusicPlayer:
     def __init__(self, mixer="pygame", music="media/"):
         """
         Initializes the MusicPlayer with the specified mixer type.
 
-        Parameters:
+        Args:
         - mixer (str): The type of mixer to use. Only "pygame" is stable for now.
+        - music (str): The directory where music files are stored.
 
         Raises:
         - ValueError: If an invalid mixer type is provided.
@@ -19,8 +22,21 @@ class MusicPlayer:
             self.sound_controller = pygameController(media_directory=music)
             raise ValueError("Invalid mixer type. Please use 'pygame'")
         self.playlist = PlaylistManager()
-        # load the music files in the media directory
+        self.isManuallyPaused = False
+
+        # Load the music files in the media directory
         self.load_songs()
+
+        # Initialize the Pygame display to use the event system
+        pygame.display.init()
+        pygame.display.set_mode((1, 1))
+
+        # Define a custom event for song end
+        self.SONG_END = pygame.USEREVENT + 1
+        pygame.mixer.music.set_endevent(self.SONG_END)
+        
+        self.event_thread = None
+        self.stop_event_thread = threading.Event()
 
     def add_to_playlist(self, mp3):
         """
@@ -33,15 +49,14 @@ class MusicPlayer:
         - PlaylistManager.enqueue method to add the MP3 file to the playlist.
         """
         self.playlist.addSongNode(mp3)
-
+    
     def play(self, mp3=None):
         """
-        # Method to Play Songs
-        plays the current song in the playlist if no argument is provided
-        
+        Plays the current song in the playlist if no argument is provided.
+
         Parameters:
         - mp3 (str): The path to the MP3 file to play. If provided, the current song in the playlist is changed to this MP3 file.
-        
+
         Uses:
         - PlaylistManager.change_current_song method to change the current song in the playlist.
         - PlaylistManager.get_current_song_path method to get the path of the current song in the playlist.
@@ -51,21 +66,26 @@ class MusicPlayer:
             self.playlist.change_current_song(mp3)
         self.sound_controller.play(self.playlist.get_current_song_path())
 
-        # Set end event to play next song
-        # This will play the next song in the playlist when the current song ends
-        self.sound_controller.after_song_ends(self.play_next)
+        # Start the event thread if not already running
+        if self.event_thread is None or not self.event_thread.is_alive():
+            self.stop_event_thread.clear()
+            self.event_thread = threading.Thread(target=self.run_event_loop, daemon=True)
+            self.event_thread.start()
 
     def stop(self):
         self.sound_controller.stop()
         self.playlist.clear()
+        self.stop_event_thread.set()  # Stop the event thread
 
     def reset_playlist(self):
         self.playlist.clear()
         
     def pause(self):
+        self.isManuallyPaused = True
         self.sound_controller.pause()
 
     def unpause(self):
+        self.isManuallyPaused = False
         self.sound_controller.unpause()
 
     def is_playing(self):
@@ -89,18 +109,19 @@ class MusicPlayer:
         self.play(self.playlist.PreviousSong())
 
     def load_songs(self, **kwargs):
-        """
-        this method will load all the songs present in the directory
-        Its main usecase is to load all the previously downloaded songs into the player
-        """
+        directory = kwargs.get("dir", self.directory)
         import os
-        
-        if("dir" in kwargs):
-            dir = kwargs["dir"]
-        else : dir = self.directory
-
-        songs = os.listdir(dir)
-        for song in songs :
+        songs = os.listdir(directory)
+        for song in songs:
             if song.endswith(".mp3"):
                 self.add_to_playlist(song)
-        
+
+    def run_event_loop(self):
+        """
+        Made for continuous play of songs in the playlist. It is a daemon thread that runs in the background to play the next song in the playlist when the current song ends.
+        """
+        while not self.stop_event_thread.is_set():
+            for event in pygame.event.get():
+                if event.type == self.SONG_END:
+                    self.play_next()
+            pygame.time.wait(400)  # Add a small delay to prevent high CPU usage

@@ -60,7 +60,6 @@ class MainWindow(Toplevel):
         # BACKEND CONFIGURATION
         self.collector = YoutubeCollector()
         self.player = MusicPlayer("pygame")
-        self.player.load_songs()
 
         # WINDOW CONFIGURATION
         self.title("CodTubify")
@@ -332,8 +331,9 @@ class MainWindow(Toplevel):
         - caller : the button object that was pressed (probably for changing its config on press)
         - **kwargs : additional arguments passed to the method, if any!
         """
-        # Handling Home Download Button Press
-        # TODO : Add Threading to avoid GUI freeze
+
+        # TODO : Add Threading to avoid GUI freeze        
+        # Handling HOME-DOWNLOAD Button Press Event
         if name == "home_download":
             query = kwargs.get("home_entry") # Getting User Input
             if query: # If User Input is not empty
@@ -345,25 +345,46 @@ class MainWindow(Toplevel):
                                 self.player.add_to_playlist(file)
                         else : # If single song is downloaded
                             self.player.add_to_playlist(filename)
-                        self.player.play()
+
+                        # Playing the downloaded song or playlist (1st element in case of playlist) 
+                        self.handle_media_control(caller, "play", file = type(filename) == list and filename[0] or filename)
+                
                 except Exception as e:
                     print(e)
                     messagebox.showerror("Error", "An error occured while downloading the song")
             else:
                 messagebox.showerror("Error", "Input Invalid, Unspecified or Empty")
-
+        
+        # Handling PLAYLIST-PLAY Button Press Event
+        elif name == "playlist_play":
+            musicFile = kwargs.get("file")
+            self.handle_media_control(caller, "play", file=musicFile)
 
         
         
 
-    def handle_media_control(self, caller, name):
+    def handle_media_control(self, caller, name , **kwargs):
         """
         This method is used to handle media control events from the main window,
         mainly responsible for controlling the media player
 
         - created to avoid code redundancy and make the code more readable
         """
-        if name == "pause":
+        if name == "play":
+            # "caller" is not accessed in this block, but it is passed to maintain consistency
+            if self.btn_PauseResume.cget("text") == "resume":
+                # If the player is paused, then change the button config suitable state
+                self.btn_PauseResume.configure(image=self.img_btn_pause)
+                self.btn_PauseResume.configure(text="pause")
+            if kwargs.get("file"):
+                # Checking if FILE to play is given in Kwargs
+                self.player.play(kwargs.get("file"))
+            else:
+                self.player.play()
+            self.btn_PauseResume.configure(image=self.img_btn_pause)
+            self.btn_PauseResume.configure(text="pause")
+
+        elif name == "pause":
             self.player.pause()
             caller.configure(image=self.img_btn_resume)
             caller.configure(text="resume")

@@ -115,12 +115,17 @@ class PlaylistManager:
         """
         if not self.head:  # queue is empty
             return []
+        
         current = self.head
         queue = [current.mp3]
-        while current.next_song != self.head:
+        
+        # Continue until we reach the head again
+        while current.next_song and current.next_song != self.head:
             current = current.next_song
             queue.append(current.mp3)
+        
         return queue
+
         
     def change_current_song(self, mp3):
         """

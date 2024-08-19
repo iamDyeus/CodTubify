@@ -24,6 +24,7 @@ class pygameController:
     def __init__(self, media_directory=None):
         try:
             mixer.init(44100, 32, 2, 2048)
+            mixer.music.set_endevent(pygame.USEREVENT)
         except pygame.error as e:
             print(f"Error initializing pygame mixer: {e}")
             return
@@ -95,7 +96,3 @@ class pygameController:
     def change_directory(self, new_directory):
         self.sounds_directory = new_directory
         print(f"Changed directory to {new_directory}")
-
-    # Setting End Event
-    def after_song_ends(self, event):
-        mixer.music.set_endevent(event)
