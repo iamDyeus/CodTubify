@@ -43,6 +43,13 @@ class MusicPlayer:
         self.event_thread = None
         self.stop_event_thread = threading.Event()
 
+        # Callback for song change, used to send a callback for Updating the GUI
+        self.on_song_change = None
+
+    def set_on_song_change_callback(self, callback):
+        """Sets the callback function to be called when the song changes."""
+        self.on_song_change = callback
+    
     def add_to_playlist(self, mp3):
         """
         when a song is downloaded, it is added to the playlist using this method
@@ -69,9 +76,14 @@ class MusicPlayer:
         """
         if mp3:
             self.playlist.change_current_song(mp3)
+
+        # Notify about the song change
+        if self.on_song_change:
+            self.on_song_change(self.playlist.get_current_song_path())
+        # Play the Song
         self.sound_controller.play(self.playlist.get_current_song_path())
 
-        # Start the event thread if not already running
+        # Start the event thread if not already running (For automatic playing nextSong after one song ends)
         if self.event_thread is None or not self.event_thread.is_alive():
             self.stop_event_thread.clear()
             self.event_thread = threading.Thread(target=self.run_event_loop, daemon=True)

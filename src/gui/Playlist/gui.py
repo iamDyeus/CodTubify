@@ -106,23 +106,33 @@ class Playlist(Frame):
             height=55.0
         )
 
-        # Playlist
-        self.playlist=Listbox(
-            self,selectmode=SINGLE,bg="SlateBlue4",selectbackground='SlateBlue4',
-            selectforeground="SeaGreen",fg='white',font=('Montserrat Bold',15),
-            width=41,height=8,borderwidth=0,highlightthickness=0,relief="ridge")
+        self.playlist = Listbox(
+            self, selectmode=SINGLE, bg="SlateBlue4", selectbackground='SlateBlue4',
+            selectforeground="SeaGreen", fg='white', font=('Montserrat Bold', 15),
+            width=41, height=8, borderwidth=0, highlightthickness=0, relief="ridge")
         self.load_player_playlist()
-        # load_songs_dir(self.playlist) # Fuck Around and Find Out
 
+        # Set callback for song change
+        self.parent.player.set_on_song_change_callback(self.update_current_song)
+        
         self.playlist.grid(columnspan=150)
-        self.playlist.place(x=50,y=110)
+        self.playlist.place(x=50, y=110)
 
 
 
+    # Some Custom Methods for this particular GUI
     def load_player_playlist(self):
         queue = self.parent.player.playlist.get_current_queue()
-        print("THE QUEUE OBTAINED IS : ")
-        print(queue)
         self.playlist.delete(0, END)
         for song in queue:
             self.playlist.insert(END, song)
+
+    def update_current_song(self, current_song):
+        """Updates the Listbox to highlight the currently playing song."""
+        songs = self.playlist.get(0, END)
+        for index, song in enumerate(songs):
+            if current_song.endswith(song):
+                self.playlist.selection_clear(0, END)
+                self.playlist.selection_set(index)
+                self.playlist.activate(index)
+                break
