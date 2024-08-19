@@ -2,6 +2,7 @@ from .soundController import pygameController
 from .mediaManager import PlaylistManager
 import pygame
 import threading
+import ctypes
 
 class MusicPlayer:
     def __init__(self, mixer="pygame", music="media/"):
@@ -30,6 +31,10 @@ class MusicPlayer:
         # Initialize the Pygame display to use the event system
         pygame.display.init()
         pygame.display.set_mode((1, 1))
+
+        # Hide the Pygame window on Windows
+        hwnd = pygame.display.get_wm_info()["window"]
+        ctypes.windll.user32.ShowWindow(hwnd, 0)  # 0 = SW_HIDE
 
         # Define a custom event for song end
         self.SONG_END = pygame.USEREVENT + 1
@@ -124,4 +129,4 @@ class MusicPlayer:
             for event in pygame.event.get():
                 if event.type == self.SONG_END:
                     self.play_next()
-            pygame.time.wait(400)  # Add a small delay to prevent high CPU usage
+            pygame.time.wait(150)  # Add a small delay to prevent high CPU usage
