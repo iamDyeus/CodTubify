@@ -335,7 +335,9 @@ class MainWindow(Toplevel):
         # TODO : Add Threading to avoid GUI freeze        
         # Handling HOME-DOWNLOAD Button Press Event
         if name == "home_download":
-            query = kwargs.get("home_entry") # Getting User Input
+            query = kwargs.get("home_entry") # Getting User 
+            # Disabling the button to avoid multiple downloads
+            caller.configure(state="disabled")
             if query: # If User Input is not empty
                 try:
                     success,filename = self.collector.collect(query)
@@ -354,6 +356,8 @@ class MainWindow(Toplevel):
                     messagebox.showerror("Error", "An error occured while downloading the song")
             else:
                 messagebox.showerror("Error", "Input Invalid, Unspecified or Empty")
+            # Re-enabling the button
+            caller.configure(state="normal")
         
         # Handling PLAYLIST-PLAY Button Press Event
         elif name == "playlist_play":
