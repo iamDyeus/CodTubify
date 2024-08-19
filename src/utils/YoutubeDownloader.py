@@ -1,12 +1,9 @@
+import os
 from yt_dlp import YoutubeDL
-# import logging
-
-# Configure logging
-# logging.basicConfig(level=logging.INFO)
-# logger = logging.getLogger(__name__)
 
 class MP3Downloader:
-    def __init__(self,**kwargs):
+    def __init__(self, **kwargs):
+        media_dir = os.path.abspath('media/')
         if 'options' in kwargs:
             self.options = kwargs['options']
         else:
@@ -16,10 +13,10 @@ class MP3Downloader:
                     'key': 'FFmpegExtractAudio',
                     'nopostoverwrites': False,
                     'preferredcodec': 'mp3',
-                    'preferredquality': '320k',  # Adjust to the desired bitrate
+                    'preferredquality': '320k',
                 }],
-                'outtmpl': 'media/%(title)s.%(ext)s',
-                'ffmpeg_location': 'bin/ffmpeg.exe'
+                'outtmpl': os.path.join(media_dir, '%(title)s.%(ext)s'),
+                'ffmpeg_location': os.path.abspath('bin/ffmpeg.exe')
             }
 
     def set_options(self, options):
@@ -28,11 +25,18 @@ class MP3Downloader:
     def download_mp3(self, link):
         try:
             with YoutubeDL(self.options) as ydl:
-                ydl.download([link])
-                # logger.info(f"Downloaded MP3 from {link}")
-                return True, ydl.prepare_filename(ydl.extract_info(link, download=False))
+                result = ydl.download([link])
+                if result == 0:  # 0 indicates success
+                    file_path = ydl.prepare_filename(ydl.extract_info(link, download=False))
+                    file_name = os.path.basename(file_path)
+                    base, ext = os.path.splitext(file_name)
+                    mp3_file_name = f"{base}.mp3"
+
+                    return True, mp3_file_name
+                else:
+                    return False, None
         except Exception as e:
-            # logger.error(f"Failed to download MP3 from {link}. Error: {e}")
+            print(f"Failed to download MP3 from {link}. Error: {e}")
             return False, None
 
 
