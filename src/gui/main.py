@@ -25,7 +25,7 @@ from tkinter import (
 from gui.Home.gui import Home
 from gui.Playlist.gui import Playlist
 # from gui.Radio.main import Radio
-# from gui.Featured.main import Featured
+from gui.Featured.gui import Featured
 # from gui.About.main import About
 
 # DEFINING ASSET PATHS
@@ -278,7 +278,8 @@ class MainWindow(Toplevel):
         # SCREENS LOGIC
         self.windows = {
             "home": Home(self),
-            "playlist": Playlist(self)
+            "playlist": Playlist(self),
+            "featured": Featured(self)
         } # Loop through windows and place them
           
             #"radio": Radio(self),
