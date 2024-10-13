@@ -26,7 +26,7 @@ from gui.Home.gui import Home
 from gui.Playlist.gui import Playlist
 # from gui.Radio.main import Radio
 from gui.Featured.gui import Featured
-# from gui.About.main import About
+from gui.About.gui import About
 
 # DEFINING ASSET PATHS
 OUTPUT_PATH = Path(__file__).parent
@@ -41,13 +41,6 @@ CURSORS_PATH = ASSETS_PATH / Path("./cursors")
 from mediaCollector.YoutubeCollector import YoutubeCollector
 from mediaPlayer.Player import MusicPlayer
 
-
-# def app():
-#     # Example usage
-#     root = tk.Tk()
-#     root.withdraw()  # Hide the root window
-#     app = MainWindow(root)
-#     root.mainloop()
 
 def app():
     MainWindow()
@@ -279,13 +272,10 @@ class MainWindow(Toplevel):
         self.windows = {
             "home": Home(self),
             "playlist": Playlist(self),
-            "featured": Featured(self)
+            "featured": Featured(self),
+            "about": About(self),
         } # Loop through windows and place them
           
-            #"radio": Radio(self),
-            # "featured": Featured(self),
-            # "about": About(self),
-
         # Set the current window to home
         self.handle_btn_press(self.btn_home, "home")
         self.sidebar_indicator.place(x=0, y=133)
